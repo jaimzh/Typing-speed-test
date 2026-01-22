@@ -1,57 +1,177 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+    <title>Typing Speed Test</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo-container">
+          <img
+            src="./assets/images/logo-small.svg"
+            alt="Keyboard Icon"
+            id="logo-icon"
+          />
+          <div class="logo-text">
+            <h1>Typing Speed Test</h1>
+            <p>Type as fast as you can in 60 seconds</p>
+          </div>
+        </div>
+        <div class="personal-best">
+          <img src="./assets/images/icon-personal-best.svg" alt="Trophy Icon" />
+          <p class="pb-label">Personal best: <span id="pb-wpm">92 WPM</span></p>
+          <p class="pb-label-mobile">
+            Best: <span id="pb-wpm-mobile">92 WPM</span>
+          </p>
+        </div>
+      </header>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Typing Speed Test</title>
+      <!-- Stats and Controls Container -->
+      <div class="dashboard">
+        <section class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-label">WPM:</span>
+            <span class="stat-value" id="current-wpm">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Accuracy:</span>
+            <span class="stat-value" id="current-accuracy">100%</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Time:</span>
+            <span class="stat-value" id="current-time">0:60</span>
+          </div>
+        </section>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
-</head>
-<body>
+        <!-- Desktop Controls (Toggles) -->
+        <section class="controls-desktop">
+          <div class="control-group">
+            <span class="control-label">Difficulty:</span>
+            <div class="toggle-group" id="difficulty-toggles">
+              <button class="btn-toggle" data-value="easy">Easy</button>
+              <button class="btn-toggle" data-value="medium">Medium</button>
+              <button class="btn-toggle active" data-value="hard">Hard</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <span class="control-label">Mode:</span>
+            <div class="toggle-group" id="mode-toggles">
+              <button class="btn-toggle active" data-value="timed">
+                Timed (60s)
+              </button>
+              <button class="btn-toggle" data-value="passage">Passage</button>
+            </div>
+          </div>
+        </section>
 
-  Personal best: <!-- PB --> WPM
+        <!-- Mobile Controls (Dropdowns) -->
+        <section class="controls-mobile">
+          <div class="dropdown" id="difficulty-dropdown">
+            <button class="dropdown-trigger">Hard</button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" data-value="easy">
+                <span class="radio"></span>Easy
+              </div>
+              <div class="dropdown-item" data-value="medium">
+                <span class="radio"></span>Medium
+              </div>
+              <div class="dropdown-item active" data-value="hard">
+                <span class="radio"></span>Hard
+              </div>
+            </div>
+          </div>
+          <div class="dropdown" id="mode-dropdown">
+            <button class="dropdown-trigger">Timed (60s)</button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item active" data-value="timed">
+                <span class="radio"></span>Timed (60s)
+              </div>
+              <div class="dropdown-item" data-value="passage">
+                <span class="radio"></span>Passage
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
-  WPM: <!-- WPM -->
-  Accuracy: <!-- Accuracy -->
-  Time: <!-- Time -->
+      <main class="typing-container">
+        <div id="passage-display" class="passage-display blur">
+          <!-- Passage text will be injected here -->
+        </div>
 
-  Difficulty:
-  Easy
-  Medium
-  Hard
+        <!-- Start Overlay -->
+        <div id="start-overlay" class="overlay">
+          <button id="start-btn" class="start-btn">Start Typing Test</button>
+          <p>Or click the text and start typing</p>
+        </div>
 
-  Mode:
-  Timed (60s)
-  Passage
+        <!-- Results Overlay -->
+        <div id="results-overlay" class="overlay hidden">
+          <div id="confetti-container"></div>
+          <div id="confetti-pattern" class="confetti-pattern"></div>
 
-  <!-- Passage -->
+          <!-- Decorative Stars -->
+          <div class="star-deco star-1">
+            <img src="./assets/images/pattern-star-1.svg" alt="" />
+          </div>
+          <div class="star-deco star-2">
+            <img src="./assets/images/pattern-star-2.svg" alt="" />
+          </div>
 
-  Start Typing Test
-  Or click the text and start typing
+          <div class="results-card">
+            <div class="result-header">
+              <div id="result-icon" class="result-icon">
+                <img
+                  src="./assets/images/icon-completed.svg"
+                  alt="Success"
+                  id="title-icon"
+                />
+              </div>
+              <h2 id="result-title">Test Complete!</h2>
+              <p id="result-subtext" class="results-sub">
+                Solid run. Keep pushing to beat your high score.
+              </p>
+            </div>
 
-  <!-- Test Complete Start -->
+            <div class="results-list">
+              <div class="res-item">
+                <span class="label">WPM:</span>
+                <span class="val" id="final-wpm">85</span>
+              </div>
+              <div class="res-item accent-red" id="accuracy-item">
+                <span class="label">Accuracy:</span>
+                <span class="val" id="final-accuracy">90%</span>
+              </div>
+              <div class="res-item accent-green" id="characters-item">
+                <span class="label">Characters:</span>
+                <span class="val" id="final-characters"
+                  >120<span class="slash">/5</span></span
+                >
+              </div>
+            </div>
+            <div id="high-scores-section" class="high-scores-section hidden">
+              <h3>Recent Top Scores</h3>
+              <ul id="high-scores-list"></ul>
+            </div>
 
-  Test Complete!
-  Solid run. Keep pushing to beat your high score.
+            <button id="retry-btn" class="go-again-btn">
+              <span id="retry-btn-text">Go Again</span>
+              <img src="./assets/images/icon-restart.svg" alt="Restart" />
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
 
-  WPM: <!-- WPM -->
-  Accuracy: <!-- Accuracy -->
-  Characters: <!-- Correct/Incorrect -->
-
-  Go Again
-  
-  <!-- Test Complete End -->
-
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
